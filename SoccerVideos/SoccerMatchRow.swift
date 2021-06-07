@@ -12,36 +12,37 @@ struct SoccerMatchRow: View {
     @State var match: MatchModel
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
+        VStack(spacing: 10.0) {
                 AsyncImage(url: URL(string: match.scoreBatModel.thumbnail)!) {
-                    Text("")
+                    Color.black
                 }
+                .aspectRatio(/*@START_MENU_TOKEN@*/1.5/*@END_MENU_TOKEN@*/, contentMode: .fit)
+                .cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
                 .onTapGesture {
                     UIApplication.shared.open(URL(string: match.scoreBatModel.url)!)
                 }
-                .cornerRadius(3.0)
                 
-                
-                
-                HStack {
-                    Link(self.match.scoreBatModel.side1.name, destination: URL(string: self.match.scoreBatModel.side1.url)!)
-                    Text("-")
-                    Link(self.match.scoreBatModel.side2.name, destination: URL(string: self.match.scoreBatModel.side2.url)!)
+                VStack(spacing: 5.0) {
+                    HStack {
+                            
+                        Link(self.match.scoreBatModel.side1.name, destination: URL(string: self.match.scoreBatModel.side1.url)!)
+                        Text("-")
+                        Link(self.match.scoreBatModel.side2.name, destination: URL(string: self.match.scoreBatModel.side2.url)!)
+                        Spacer()
+                    }
+                    .font(.headline)
                     
-                    Spacer()
+                    HStack {
+                        Link(self.match.scoreBatModel.competition.name, destination: URL(string: self.match.scoreBatModel.competition.url)!)
+                        Spacer()
+                    }
+                    //.padding(.leading, 5)
+                    .font(.caption2)
                 }
-                .font(.body)
                 
-                HStack {
-                    Link(self.match.scoreBatModel.competition.name, destination: URL(string: self.match.scoreBatModel.competition.url)!)
-                    Spacer()
-                }
-                .font(.footnote)
             }
             .padding(.leading, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
             .padding(.trailing, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-        }
 
     }
     

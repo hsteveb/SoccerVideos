@@ -37,8 +37,9 @@ class ImageLoader: ObservableObject {
             return
         }
         
-        print("Image Loader: loading image")
+        //print("Image Loader: loading image")
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .retry(1)
             .subscribe(on: Self.imageProcessingQueue)
             .map { UIImage(data: $0.data) }
             .replaceError(with: nil)
