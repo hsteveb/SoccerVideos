@@ -24,7 +24,7 @@ struct AsyncImage<PlaceHolder: View>: View {
                 print("public body: onAppear being called")
                 if loader.image == nil {
                     print("image is nil")
-                    withAnimation(.easeInOut(duration: 0.25)) {
+                    withAnimation(.easeInOut(duration: 1)) {
                         loader.load()
                     }
                 }
@@ -33,12 +33,12 @@ struct AsyncImage<PlaceHolder: View>: View {
     }
     
     private var content: some View {
-        VStack {
+        ZStack {
+            placeholder()
             if loader.image != nil {
                 Image(uiImage: loader.image!)
                     .resizable()
-            } else {
-                placeholder()
+                    .transition(.opacity)
             }
         }
     }

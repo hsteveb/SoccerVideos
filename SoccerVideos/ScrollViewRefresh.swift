@@ -8,79 +8,59 @@
 import SwiftUI
 
 struct ScrollViewRefresh<Content: View>: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var network: ScoreBatNetwork
     @State private var offset = 0.0
     @State private var refresh = false
-    @State private var disable = false
+    @State private var once = false
+    @State private var opacity = 0.0
     private let threshold = 60.0
     private let content: () -> Content
-
+    @State private var rep = false
+    
     init(network: ScoreBatNetwork, @ViewBuilder content: @escaping () -> Content) {
         self.network = network
         self.content = content
+        UITableView.appearance().showsVerticalScrollIndicator = false
+        UITableView.appearance().backgroundColor = UIColor.clear
+        UITableView.appearance().separatorStyle = .none
     }
-
-  var body: some View {
-    ZStack(alignment: .center) {
-        /*ProgressView shown to refresh data for the scrollview.*/
-        /*VStack {
-            Text("Refresh")
-            Spacer()
-        }
-        .frame(height: 60)
-        .opacity(self.refresh ? 0 : self.offset)*/
-        if self.refresh {
-            ProgressView()
-        } else {
-            ScrollView(showsIndicators: false) {
-                offsetReader
-                content()
-            }
-            .coordinateSpace(name: "frameLayer")
-            .onPreferenceChange(ScrollViewKey.self, perform: { value in
-                //print(value)
-                self.offset = value / threshold
-                if value >= self.threshold && !self.refresh {
-                    self.refreshData()
-                    let impact = UIImpactFeedbackGenerator(style: .light)
-                    impact.impactOccurred()
+    
+    var body: some View {
+            /*ProgressView shown to refresh data for the scrollview.*/
+            VStack(spacing: 0) {
+                
+                Header(refresh: self.$refresh) {
+                    if !self.refresh {
+                        self.refreshData()
+                        let impact = UIImpactFeedbackGenerator(style: .light)
+                        impact.impactOccurred()
+                    }
                 }
-            })
-        }
 
+                List {
+                    content()
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .listStyle(PlainListStyle()
+                )
+            }
     }
-  }
-
-    /*View used to measure the offset on the ScrollView to reach the threshold.*/
-  var offsetReader: some View {
-    GeometryReader { proxy in
-      Color.clear
-        .preference(
-          key: ScrollViewKey.self,
-            value: Double(proxy.frame(in: .named("frameLayer"
-            )).minY)
-        )
-    }
-    .frame(height: 0)
-  }
     
     func refreshData() {
-        withAnimation(.easeInOut(duration: 0.1)) {
+        withAnimation(.easeInOut(duration: 0.25)) {
             self.refresh = true
-            
-            
             DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(1)) {
-                self.disable = true
                 self.network.pullVideo {
-                    withAnimation(.easeInOut(duration: 0.1)) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
                         self.refresh = false
-                        self.disable = false
                     }
                 }
             }
         }
     }
-  }
+    
+}
 
 
 
@@ -90,6 +70,6 @@ struct ScrollViewRefresh_Previews: PreviewProvider {
         ScrollViewRefresh(network: ScoreBatNetwork()) {
             Text("1")
         }
-}
+    }
 }
 

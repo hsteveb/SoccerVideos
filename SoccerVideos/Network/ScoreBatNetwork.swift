@@ -13,16 +13,11 @@ class ScoreBatNetwork: ObservableObject {
     private var requests = Set<AnyCancellable>()
     
     init() {
-        self.pullVideo {
-            //print(Test)
-        }
+        self.pullVideo()
     }
     
     
-    func pullVideo(content: @escaping () -> Void)  {
-        DispatchQueue.main.async {
-            self.matchList = [MatchModel]()
-        }
+    func pullVideo(content: (() -> Void)? = nil)  {
        
         let path = "https://www.scorebat.com/video-api/v1/"
         let url = URL(string: path)
@@ -40,7 +35,11 @@ class ScoreBatNetwork: ObservableObject {
                         matchList.append(MatchModel(id: UUID().hashValue, scoreBatModel: match))
                     }
                     self.matchList = matchList
-                content()
+                
+                if content != nil {
+                    content!()
+                }
+
             })
             .store(in: &requests)
             

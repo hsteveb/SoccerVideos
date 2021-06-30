@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Highlights: View {
+    let title = "Highlights"
     @ObservedObject var scoreBatNetwork = ScoreBatNetwork()
     @Environment(\.colorScheme) var colorScheme
     @State var select = 0
@@ -23,7 +24,7 @@ struct Highlights: View {
     var body: some View {
         GeometryReader { geometry in
         VStack(spacing: 0) {
-            Header(title: "Highlights", refresh: self.$refresh) {
+            Header(title: self.title, refresh: self.$refresh) {
                 if !self.refresh {
                     self.refreshData()
                     let impact = UIImpactFeedbackGenerator(style: .light)

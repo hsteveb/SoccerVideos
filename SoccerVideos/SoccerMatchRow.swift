@@ -10,6 +10,7 @@ import SwiftUI
 struct SoccerMatchRow: View {
     @State var value = true
     @State var match: MatchModel
+    @State var like = false
     
     var body: some View {
         VStack(spacing: 10.0) {
@@ -17,11 +18,11 @@ struct SoccerMatchRow: View {
                     Color.black
                 }
                 .aspectRatio(/*@START_MENU_TOKEN@*/1.5/*@END_MENU_TOKEN@*/, contentMode: .fit)
-                .cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
+                //.cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
                 .onTapGesture {
                     UIApplication.shared.open(URL(string: match.scoreBatModel.url)!)
                 }
-                
+            HStack(alignment: .bottom) {
                 VStack(spacing: 5.0) {
                     HStack {
                             
@@ -36,14 +37,40 @@ struct SoccerMatchRow: View {
                         Link(self.match.scoreBatModel.competition.name, destination: URL(string: self.match.scoreBatModel.competition.url)!)
                         Spacer()
                     }
-                    //.padding(.leading, 5)
                     .font(.caption2)
                 }
-                
+                Spacer()
+                HStack(alignment:.bottom) {
+                    Button(action: {
+                        self.like.toggle()
+                    }, label:
+                            {
+                                if self.like {
+                                    Image(systemName: "heart.fill")
+                                } else {
+                                    Image(systemName: "heart")
+                                }
+                        
+                    })
+                    Button(action: {
+                        let av = UIActivityViewController(activityItems: [match.scoreBatModel.url], applicationActivities: nil)
+                        UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true, completion: nil)
+                    }, label: {
+                        Image(systemName: "square.and.arrow.up")
+                    })
+                }
+                .font(.title2)
             }
-            .padding(.leading, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-            .padding(.trailing, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-
+            .padding(.leading, 5)
+            .padding(.trailing, 5)
+            Color.clear
+                .frame(height: 10)
+            Spacer()
+            }
+        //.padding(.leading, 10)
+        //.padding(.trailing, 10)
+        
+        
     }
     
     
