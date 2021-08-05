@@ -1,14 +1,13 @@
 //
-//  SoccerVideosTests.swift
+//  StandingsModelTests.swift
 //  SoccerVideosTests
 //
-//  Created by Hector Barrios on 4/12/21.
+//  Created by Hector Barrios on 7/11/21.
 //
 
 import XCTest
-@testable import SoccerVideos
 
-class SoccerVideosTests: XCTestCase {
+class StandingsModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -28,10 +27,6 @@ class SoccerVideosTests: XCTestCase {
         self.measure {
             // Put the code you want to measure the time of here.
         }
-    }
-    
-    func testScoreBatNetwork() throws {
-        //ScoreBatNetwork.pullVideo()
     }
 
 }

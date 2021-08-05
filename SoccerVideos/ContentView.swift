@@ -6,20 +6,25 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @ObservedObject var standingsViewModel = StandingsListViewViewModel()
+    @ObservedObject var standingsMainViewModel = StandingsMainViewModel()
     @State private var select = 0
     var body: some View {
         VStack {
             if(self.select == 0) {
                 News()
             } else if self.select == 1 {
-                Standings()
+                StandingsMainView()
+                    .environmentObject(self.standingsMainViewModel)
+                    .environmentObject(self.standingsViewModel)
             } else if self.select == 2 {
                 Highlights()
             } else {
-                More()
+                Games()
             }
 
             /*Footer*/

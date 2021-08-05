@@ -1,14 +1,14 @@
 //
-//  SoccerVideosTests.swift
+//  LeaguesModelTests.swift
 //  SoccerVideosTests
 //
-//  Created by Hector Barrios on 4/12/21.
+//  Created by Hector Barrios on 7/11/21.
 //
 
 import XCTest
 @testable import SoccerVideos
 
-class SoccerVideosTests: XCTestCase {
+class LeaguesModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -30,8 +30,12 @@ class SoccerVideosTests: XCTestCase {
         }
     }
     
-    func testScoreBatNetwork() throws {
-        //ScoreBatNetwork.pullVideo()
+    /* make sure initialization works with a nil response value.*/
+    func testInitializeLeagueModel() throws {
+        let league = LeaguesModel()
+        XCTAssert(league.response == nil, "Should be nil")
     }
+    
+    
 
 }
